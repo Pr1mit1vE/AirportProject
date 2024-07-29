@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище AirportDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Airline">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FlightInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CityIdFrom" Type="int" Nullable="false" />
+          <Property Name="CityIdWhere" Type="int" Nullable="false" />
+          <Property Name="DateFrom" Type="datetime" Nullable="false" />
+          <Property Name="NumberOfSeats" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Price" Type="money" Nullable="false" />
+          <Property Name="IdAirline" Type="int" Nullable="false" />
+          <Property Name="DateWhere" Type="datetime" Nullable="false" />
+          <Property Name="Discount" Type="int" />
+        </EntityType>
+        <EntityType Name="PurchaseHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdFlightInfo" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IdUser" Type="int" Nullable="false" />
+          <Property Name="TIcketsCount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Surname " Type="nvarchar" MaxLength="50" />
+          <Property Name="Patronymic" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_FlightInfo_ToAirline">
+          <End Role="Airline" Type="Self.Airline" Multiplicity="1" />
+          <End Role="FlightInfo" Type="Self.FlightInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airline">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FlightInfo">
+              <PropertyRef Name="IdAirline" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlightInfo_ToCity">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="FlightInfo" Type="Self.FlightInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FlightInfo">
+              <PropertyRef Name="CityIdFrom" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlightInfo_ToCity2">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="FlightInfo" Type="Self.FlightInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FlightInfo">
+              <PropertyRef Name="CityIdWhere" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseHistory_ToFlightInfo">
+          <End Role="FlightInfo" Type="Self.FlightInfo" Multiplicity="1" />
+          <End Role="PurchaseHistory" Type="Self.PurchaseHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PurchaseHistory">
+              <PropertyRef Name="IdFlightInfo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseHistory_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="PurchaseHistory" Type="Self.PurchaseHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PurchaseHistory">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище AirportDBModelContainer">
+          <EntitySet Name="Airline" EntityType="Self.Airline" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FlightInfo" EntityType="Self.FlightInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseHistory" EntityType="Self.PurchaseHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FlightInfo_ToAirline" Association="Self.FK_FlightInfo_ToAirline">
+            <End Role="Airline" EntitySet="Airline" />
+            <End Role="FlightInfo" EntitySet="FlightInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlightInfo_ToCity" Association="Self.FK_FlightInfo_ToCity">
+            <End Role="City" EntitySet="City" />
+            <End Role="FlightInfo" EntitySet="FlightInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlightInfo_ToCity2" Association="Self.FK_FlightInfo_ToCity2">
+            <End Role="City" EntitySet="City" />
+            <End Role="FlightInfo" EntitySet="FlightInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseHistory_ToFlightInfo" Association="Self.FK_PurchaseHistory_ToFlightInfo">
+            <End Role="FlightInfo" EntitySet="FlightInfo" />
+            <End Role="PurchaseHistory" EntitySet="PurchaseHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseHistory_ToUsers" Association="Self.FK_PurchaseHistory_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PurchaseHistory" EntitySet="PurchaseHistory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AirportDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Airline">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="FlightInfo" Relationship="Self.FK_FlightInfo_ToAirline" FromRole="Airline" ToRole="FlightInfo" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="City1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="FlightInfo" Relationship="Self.FK_FlightInfo_ToCity" FromRole="City" ToRole="FlightInfo" />
+          <NavigationProperty Name="FlightInfo1" Relationship="Self.FK_FlightInfo_ToCity2" FromRole="City" ToRole="FlightInfo" />
+        </EntityType>
+        <EntityType Name="FlightInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CityIdFrom" Type="Int32" Nullable="false" />
+          <Property Name="CityIdWhere" Type="Int32" Nullable="false" />
+          <Property Name="DateFrom" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NumberOfSeats" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="IdAirline" Type="Int32" Nullable="false" />
+          <Property Name="DateWhere" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Discount" Type="Int32" />
+          <NavigationProperty Name="Airline" Relationship="Self.FK_FlightInfo_ToAirline" FromRole="FlightInfo" ToRole="Airline" />
+          <NavigationProperty Name="City" Relationship="Self.FK_FlightInfo_ToCity" FromRole="FlightInfo" ToRole="City" />
+          <NavigationProperty Name="City1" Relationship="Self.FK_FlightInfo_ToCity2" FromRole="FlightInfo" ToRole="City" />
+          <NavigationProperty Name="PurchaseHistory" Relationship="Self.FK_PurchaseHistory_ToFlightInfo" FromRole="FlightInfo" ToRole="PurchaseHistory" />
+        </EntityType>
+        <EntityType Name="PurchaseHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdFlightInfo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IdUser" Type="Int32" Nullable="false" />
+          <Property Name="TIcketsCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="FlightInfo" Relationship="Self.FK_PurchaseHistory_ToFlightInfo" FromRole="PurchaseHistory" ToRole="FlightInfo" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_PurchaseHistory_ToUsers" FromRole="PurchaseHistory" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Surname_" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PurchaseHistory" Relationship="Self.FK_PurchaseHistory_ToUsers" FromRole="Users" ToRole="PurchaseHistory" />
+        </EntityType>
+        <Association Name="FK_FlightInfo_ToAirline">
+          <End Role="Airline" Type="Self.Airline" Multiplicity="1" />
+          <End Role="FlightInfo" Type="Self.FlightInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airline">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FlightInfo">
+              <PropertyRef Name="IdAirline" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlightInfo_ToCity">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="FlightInfo" Type="Self.FlightInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FlightInfo">
+              <PropertyRef Name="CityIdFrom" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlightInfo_ToCity2">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="FlightInfo" Type="Self.FlightInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FlightInfo">
+              <PropertyRef Name="CityIdWhere" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseHistory_ToFlightInfo">
+          <End Role="FlightInfo" Type="Self.FlightInfo" Multiplicity="1" />
+          <End Role="PurchaseHistory" Type="Self.PurchaseHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PurchaseHistory">
+              <PropertyRef Name="IdFlightInfo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseHistory_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="PurchaseHistory" Type="Self.PurchaseHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PurchaseHistory">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AirportDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Airline" EntityType="Self.Airline" />
+          <EntitySet Name="City" EntityType="Self.City" />
+          <EntitySet Name="FlightInfo" EntityType="Self.FlightInfo" />
+          <EntitySet Name="PurchaseHistory" EntityType="Self.PurchaseHistory" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_FlightInfo_ToAirline" Association="Self.FK_FlightInfo_ToAirline">
+            <End Role="Airline" EntitySet="Airline" />
+            <End Role="FlightInfo" EntitySet="FlightInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlightInfo_ToCity" Association="Self.FK_FlightInfo_ToCity">
+            <End Role="City" EntitySet="City" />
+            <End Role="FlightInfo" EntitySet="FlightInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlightInfo_ToCity2" Association="Self.FK_FlightInfo_ToCity2">
+            <End Role="City" EntitySet="City" />
+            <End Role="FlightInfo" EntitySet="FlightInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseHistory_ToFlightInfo" Association="Self.FK_PurchaseHistory_ToFlightInfo">
+            <End Role="FlightInfo" EntitySet="FlightInfo" />
+            <End Role="PurchaseHistory" EntitySet="PurchaseHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseHistory_ToUsers" Association="Self.FK_PurchaseHistory_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PurchaseHistory" EntitySet="PurchaseHistory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище AirportDBModelContainer" CdmEntityContainer="AirportDBEntities">
+          <EntitySetMapping Name="Airline">
+            <EntityTypeMapping TypeName="AirportDBModel.Airline">
+              <MappingFragment StoreEntitySet="Airline">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="City">
+            <EntityTypeMapping TypeName="AirportDBModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="City1" ColumnName="City" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FlightInfo">
+            <EntityTypeMapping TypeName="AirportDBModel.FlightInfo">
+              <MappingFragment StoreEntitySet="FlightInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CityIdFrom" ColumnName="CityIdFrom" />
+                <ScalarProperty Name="CityIdWhere" ColumnName="CityIdWhere" />
+                <ScalarProperty Name="DateFrom" ColumnName="DateFrom" />
+                <ScalarProperty Name="NumberOfSeats" ColumnName="NumberOfSeats" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="IdAirline" ColumnName="IdAirline" />
+                <ScalarProperty Name="DateWhere" ColumnName="DateWhere" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseHistory">
+            <EntityTypeMapping TypeName="AirportDBModel.PurchaseHistory">
+              <MappingFragment StoreEntitySet="PurchaseHistory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdFlightInfo" ColumnName="IdFlightInfo" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="TIcketsCount" ColumnName="TIcketsCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="AirportDBModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname_" ColumnName="Surname " />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
